@@ -1,33 +1,29 @@
-package br.com.api.res_with_spring_boot_and_kotlin_2025
+package br.com.api.res_with_spring_boot_and_kotlin_2025.service
 
 import br.com.api.res_with_spring_boot_and_kotlin_2025.exceptions.UnsupportedMathOperationException
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.stereotype.Service
 
-@RestController
-class MathController {
-
-    @PostMapping("/math/{numberOne}/{operation}/{numberTwo}")
-    fun math(
-        @PathVariable(value = "numberOne") numberOne: String?,
-        @PathVariable(value = "operation") operation: String?,
-        @PathVariable(value = "numberTwo") numberTwo: String?
-    ): Double {
+@Service
+class MathOperationServiceImpl() : MathOperationService {
+    override fun math(numberOne: String?, operation: String?, numberTwo: String?): Double {
         if (!isNumeric(numberOne) ||
             !isNumeric(numberTwo)
         ) throw UnsupportedMathOperationException("Por favor, insira valores numéricos!")
+
         return mathOperation(numberOne, operation, numberTwo)
     }
 
-    @PostMapping("/sqrt/{numberOne}")
-    fun sqrt(
-        @PathVariable(value = "numberOne") numberOne: String?
-    ): Double {
-        if (!isNumeric(numberOne)
+    override fun sqrt(number: String?): Double {
+        if (!isNumeric(number)
 
         ) throw UnsupportedMathOperationException("Por favor, insira valores numéricos!")
-        return convertToDouble(numberOne) * convertToDouble(numberOne)
+        return convertToDouble(number) * convertToDouble(number)
+    }
+
+    private fun isNumeric(number: String?): Boolean {
+        if (number.isNullOrBlank()) return false
+        val convertedNumber = number.replace(",".toRegex(), ".")
+        return convertedNumber.matches("""[-+]?[0-9]*\.?[0-9]+""".toRegex())
     }
 
     private fun mathOperation(numberOne: String?, operation: String?, numberTwo: String?): Double {
@@ -50,12 +46,5 @@ class MathController {
         val convertedNumber = number.replace(",".toRegex(), ".")
 
         return if (isNumeric(convertedNumber)) convertedNumber.toDouble() else 0.0
-
-    }
-
-    private fun isNumeric(number: String?): Boolean {
-        if (number.isNullOrBlank()) return false
-        val convertedNumber = number.replace(",".toRegex(), ".")
-        return convertedNumber.matches("""[-+]?[0-9]*\.?[0-9]+""".toRegex())
     }
 }
