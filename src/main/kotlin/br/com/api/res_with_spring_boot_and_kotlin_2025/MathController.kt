@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 class MathController {
 
     @PostMapping("/math/{numberOne}/{operation}/{numberTwo}")
-    fun sum(
+    fun math(
         @PathVariable(value = "numberOne") numberOne: String?,
         @PathVariable(value = "operation") operation: String?,
         @PathVariable(value = "numberTwo") numberTwo: String?
@@ -18,6 +18,16 @@ class MathController {
             !isNumeric(numberTwo)
         ) throw UnsupportedMathOperationException("Por favor, insira valores numéricos!")
         return mathOperation(numberOne, operation, numberTwo)
+    }
+
+    @PostMapping("/sqrt/{numberOne}")
+    fun sqrt(
+        @PathVariable(value = "numberOne") numberOne: String?
+    ): Double {
+        if (!isNumeric(numberOne)
+
+        ) throw UnsupportedMathOperationException("Por favor, insira valores numéricos!")
+        return convertToDouble(numberOne) * convertToDouble(numberOne)
     }
 
     private fun mathOperation(numberOne: String?, operation: String?, numberTwo: String?): Double {
@@ -29,8 +39,7 @@ class MathController {
             "sub" -> convertedValueOne - convertedValueTwo
             "div" -> convertedValueOne / convertedValueTwo
             "multi" -> convertedValueOne * convertedValueTwo
-            "medium" -> (convertedValueOne + convertedValueTwo) / 2
-            "sqrt" -> (convertedValueOne * convertedValueOne)
+            "mean" -> (convertedValueOne + convertedValueTwo) / 2
             else -> 0.0
         }
     }
