@@ -17,4 +17,8 @@ class PersonController(
     fun findById(@PathVariable id: Long): Person {
         return service.findById(id)
     }
+    @GetMapping
+    fun findAll(): List<Person> {
+        return service.findAll()
+    }
 }
