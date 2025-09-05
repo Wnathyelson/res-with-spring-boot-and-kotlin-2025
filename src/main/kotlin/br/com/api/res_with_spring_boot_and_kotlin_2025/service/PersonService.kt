@@ -11,6 +11,12 @@ class PersonService {
 
     private val logger = java.util.logging.Logger.getLogger(PersonService::class.java.name)
 
+    fun create(person: Person) = person
+
+    fun update(person: Person) = person
+    
+    fun delete(id: Long) {}
+
     fun findById(id: Long): Person {
         logger.info("Finding one person!")
 
